@@ -82,6 +82,7 @@ def load_data_mixed(data_path):
 	train_set.extend(genotype_col)
 	train_set.extend(genotype_adh)
 	train_set.sort()
+	# Create a training set
 	train_set = [1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 13, 14, 15, 16, 18, 19, 21, 22, 23] 
 	train_set = [x - 1 for x in train_set]
 
@@ -95,6 +96,7 @@ def load_data_mixed(data_path):
 
 	test_set_count = [rand_ein2, rand_pgm, rand_ctr, rand_col, rand_adh]
 	test_set_count.sort()
+	# Create a test set
 	test_set_count = [9, 11, 17, 20, 24]
 	test_set_count = [x - 1 for x in test_set_count]
 
@@ -143,7 +145,6 @@ def load_data_mixed(data_path):
 	mask_testing = np.empty(5, dtype=object)
 
 	PLA_training = np.empty([19, 52], dtype=int)
-	# PLA_val = np.empty([5, 52], dtype = int)
 	PLA_training_gen = np.empty([15, 52], dtype=int)
 	PLA_training_gen_col = np.empty([4, 52], dtype=int)
 	PLA_training_gen_col_two = np.empty([4, 156], dtype=int)

@@ -59,11 +59,13 @@ def testing_results(model, data, results_path):
 	y_train_count = np.reshape(y_train_count, (len(y_train_count),1))
 	res_train_count = np.concatenate((y_train_count, pred_count_round_train) , axis =1)
 
+	# Compute difference in count 
 	difference_count_train = np.array(np.round([(res_train_count[h,1]-res_train_count[h,0]) for h in range(0,len(y_train_count))]))
 	difference_count_train = difference_count_train.reshape(difference_count_train.size, 1)
 	difference_std_count_train = np.std(difference_count_train)
 	average_diff_train_count = np.average(difference_count_train)
 
+	# Compute absolute difference in count 
 	difference_count_abs_train = np.array(np.round([abs(res_train_count[h,1]-res_train_count[h,0]) for h in range(0,len(y_train_count))]))
 	difference_count_abs_train = difference_count_abs_train.reshape(difference_count_abs_train.size, 1)
 	difference_std_abs_count_train = np.std(difference_count_abs_train)
@@ -76,12 +78,15 @@ def testing_results(model, data, results_path):
 	res_train_count = np.concatenate((res_train_count,prediction_equal_train), axis=1)
 
 	mean_arr_train = np.mean(res_train_count[:,1], axis=0)
+	# Compute R^2
 	r_coeff_train = r2_score(y_train_count, pred_count_round_train)
+	# Compute MSE
 	MSE_train = mean_squared_error(y_train_count,pred_count_round_train)
+	# Compute Agreement
 	agreement_sum_train = np.sum(prediction_equal_train)
 	agreement_train = agreement_sum_train/len(y_train_count)
 
-	#Age
+	#PLA
 	pred_PLA_round_train = np.round(predictions_train_PLA)
 	pred_PLA_round_train = np.array(pred_PLA_round_train, dtype= int)
 	y_train_PLA = np.reshape(y_train_PLA, (len(y_train_PLA),1))
@@ -109,8 +114,8 @@ def testing_results(model, data, results_path):
 	agreement_sum_train_PLA = np.sum(prediction_equal_train_PLA)
 	agreement_train_PLA = agreement_sum_train_PLA/len(y_train_PLA)
 
-	#Genotype
-	pred_genotype_train = np.empty([res_total_size,1], dtype = int)
+	# Compute Genotype stats
+ 	pred_genotype_train = np.empty([res_total_size,1], dtype = int)
 	for i in range(len(predictions_train_genotype)):
 		pred_genotype_train[i] = np.argmax(predictions_train_genotype[i])
 	print(y_train_genotype.shape)
@@ -132,6 +137,7 @@ def testing_results(model, data, results_path):
 	agreement_train_genotype = agreement_sum_train_genotype/len(y_train_genotype)
 
 	# Test set results #
+	# Same as the train set stats
 	print('Test Statistics')
 	predictions_test = model.predict(x_test_all)
 	predictions_test_count = predictions_test[0]
@@ -304,7 +310,7 @@ def testing_results(model, data, results_path):
 	results_arrays_dict_genotype['Test agreement'] = res_genotype_equal[2,:]
 
 
-
+	# Writing stat results to excel files using pandas
 	results_arrays_dataframe_count = pd.DataFrame(results_arrays_dict_count, index=list(range(0,len(y_train_count))))
 	excel_writer_one = pd.ExcelWriter(results_path+'/ResultsPredictionsCount.xlsx', engine='xlsxwriter')
 	results_arrays_dataframe_count.to_excel(excel_writer_one, sheet_name='Sheet1')

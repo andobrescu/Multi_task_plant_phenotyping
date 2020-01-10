@@ -27,8 +27,12 @@ from model.model_multitask import multi_task_model_mixed , counter_model_augment
 from compute_statistics_multi import testing_results
 
 print('Welcome to my program')
+# At the moment the program requires to load the datasets. If using on different datasets or
+# there is no access to the datasets used in the paper delete the lines 36-88. 
+# ToDo make dataset import dynamic
 
 datasets_path = '/home/andrei/Datasets' # Change to datasets path
+
 
 # Load phenotiki dataset
 data_pheno = load_data_mixed(datasets_path)

@@ -5,7 +5,9 @@ import cv2
 import matplotlib.pyplot as plt
 
 
-
+# On epoch end get the intermediate masks for a set of images at a set of given layers
+# layers is given as a list of integers corresponding to convolutional layers
+# batch_size is how many images are computed at each layer
 class vis_layer(callbacks.Callback):
 	def __init__(self, imgs, labels, layers, results_path, batch_size=6):
 		super(vis_layer, self).__init__()
@@ -15,9 +17,9 @@ class vis_layer(callbacks.Callback):
 		self.layers = layers
 		self.output_path = results_path
 	def on_epoch_end(self, epoch, logs=None):
-
-		# random_idx = np.random.choice(np.arange(0,len(self.X)), self.batch_size)
-		random_idx = [75,  86, 22, 268, 180, 210]
+		# random input chouce or specify images
+		random_idx = np.random.choice(np.arange(0,len(self.X)), self.batch_size)
+		# random_idx = [75,  86, 22, 268, 180, 210]
 		
 		img_batch = []
 		for i in random_idx:
@@ -45,7 +47,7 @@ class vis_layer(callbacks.Callback):
 
 		num_rows = len(l_rows) + 1
 
-
+		#plot the intermediate masks
 		plt.subplot(num_rows, 1, 1)
 		plt.imshow(img_batch_row)
 		plt.title('Intermediate layer visualization')

@@ -55,7 +55,6 @@ def multi_task_model_mixed(results_path, data, missing_labels, gen_weight):
         how_much_mask = missing_labels
         idx_mask = np.random.randint(TYC, size = int(TYC*how_much_mask)) 
         y_train_count[idx_mask] = mask_value
-        # y_train_count[:int(TYC*0.2)] = mask_value
         where_miss = np.where(y_train_count == mask_value)
         np.savetxt(results_path+'/missing_labels.csv', where_miss[0], delimiter=',')
         np.savetxt(results_path+'/train_labels.csv', y_train_count, delimiter=',')
@@ -121,7 +120,7 @@ def multi_task_model_mixed(results_path, data, missing_labels, gen_weight):
     def PLA_loss(y_true, y_pred):
         return K.mean(K.square((y_pred - y_true)*10), axis=-1)
 
-    
+    # function to mask the target value so that the model does not see the label value if it is -1
     def MSE_masked_loss(y_true, y_pred):
         mask = K.cast(K.not_equal(y_true, mask_value), K.floatx())
         return K.mean(K.square(y_pred*mask - y_true*mask), axis=-1)
